@@ -1,10 +1,11 @@
-use utils::set_margin;
-use fontfinder::fonts::Font;
-use gtk::prelude::*;
-use gtk;
-use std::rc::Rc;
-use webkit2gtk::*;
 use super::FontList;
+use fontfinder::fonts::Font;
+use gtk;
+use gtk::prelude::*;
+use gtk::TextTagTable;
+use std::rc::Rc;
+use utils::set_margin;
+use webkit2gtk::*;
 
 #[derive(Clone)]
 pub struct Main {
@@ -29,7 +30,7 @@ impl Main {
             | set_margin(&menu, 3, 5, 0, 5);
             ..append_text("All");
             | categories.iter().for_each(|c| menu.append_text(c.as_str()));
-            ..set_active(0);
+            ..set_active(Some(0));
         };
 
         // Ability to toggle between sorting methods.
@@ -40,7 +41,7 @@ impl Main {
             ..append_text("Popular");
             ..append_text("Date Added");
             ..append_text("Alphabetical");
-            ..set_active(0);
+            ..set_active(Some(0));
         };
 
         // Search bar beneath the category menu for doing name-based filters.
@@ -59,13 +60,18 @@ impl Main {
 
         // Initializes the webkit2gtk preview that will display the fonts.
         let context = WebContext::get_default().unwrap();
-        let view = WebView::new_with_context_and_user_content_manager(
-            &context,
-            &UserContentManager::new(),
-        );
+        let view = WebView::new_with_context(&context);
+        // TODO: Where does this content manager go?
+        // let view = WebView::new_with_context_and_user_content_manager(
+        //     &context,
+        //     &UserContentManager::new(),
+        // );
 
         // Initializes the sample text buffer that the preview is generated from.
-        let buffer = gtk::TextBuffer::new(None);
+        let buffer = {
+            let inner: Option<&TextTagTable> = None;
+            gtk::TextBuffer::new(inner)
+        };
 
         {
             // Set the text once the UI has loaded, so that it is not hidden.

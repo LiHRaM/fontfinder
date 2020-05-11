@@ -38,7 +38,7 @@ impl App {
 
         let window = cascade! {
             gtk::Window::new(gtk::WindowType::Toplevel);
-            ..set_titlebar(header.as_ref());
+            ..set_titlebar(Some(header.as_ref()));
             ..set_title("Font Finder");
             | gtk::Window::set_default_icon_name("typecatcher");
             ..set_default_size(800, 600);

@@ -3,7 +3,7 @@ bindir = $(prefix)/bin
 appdir = $(prefix)/share/applications
 icondir = $(prefix)/share/icons/hicolor/scalable/apps
 
-RELEASE=target/release/
+CARGO_TARGET_DIR?=target
 GTK=fontfinder-gtk
 DESKTOP=fontfinder.desktop
 
@@ -24,7 +24,7 @@ distclean: clean
 	rm -rf .cargo vendor
 
 install:
-	install -D $(RELEASE)$(GTK) $(DESTDIR)$(bindir)/$(GTK)
+	install -D $(CARGO_TARGET_DIR)/release/$(GTK) $(DESTDIR)$(bindir)/$(GTK)
 	install -Dm644 assets/$(DESKTOP) $(DESTDIR)$(appdir)/$(DESKTOP)
 
 uninstall:

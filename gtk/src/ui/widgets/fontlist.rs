@@ -1,6 +1,6 @@
 use fontfinder::fonts::Font;
-use gtk::prelude::*;
 use gtk;
+use gtk::prelude::*;
 use std::cell::{Ref, RefCell};
 use std::ops::Deref;
 
@@ -24,8 +24,9 @@ impl FontList {
         let fonts = Vec::with_capacity(fonts_archive.len());
 
         // Allows the font list box to scroll
+        let adjustment: Option<&gtk::Adjustment> = None;
         let scroller = cascade! {
-            gtk::ScrolledWindow::new(None, None);
+            gtk::ScrolledWindow::new(adjustment, adjustment);
             ..set_property_hscrollbar_policy(gtk::PolicyType::Never);
             ..set_min_content_width(200);
             ..add(&container);
